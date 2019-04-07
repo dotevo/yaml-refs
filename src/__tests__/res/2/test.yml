@@ -1,0 +1,5 @@
+a: &a
+    aa:
+      aaa: val
+
+b: !ref ./include.yml#object
