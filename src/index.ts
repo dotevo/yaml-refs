@@ -51,20 +51,16 @@ class Ref extends YAMLMap{
   }
 
   toString(ctx, onComment) {
-    return this.mPath;
+    return '"' + this.mFilePath + '#' + this.mObjPath + '"';
   }
 };
 
 const ref = {
   identify: value => value.constructor === Ref,
-  default: true,
   nodeClass: Ref,
   tag: '!ref',
   resolve: function(doc, cst) {
     return new Ref(doc, cst.strValue);
-  },
-  stringify(item, ctx, onComment, onChompKeep) {
-    return stringifyString({ value: item.toString() }, ctx, onComment, onChompKeep)
   }
 }
 
