@@ -1,5 +1,5 @@
-a:
+"a#a":
     aa:
       aaa: val
 
-b: !ref "#a/aa"
+b: !ref "#a#a"

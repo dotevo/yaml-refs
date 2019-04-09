@@ -34,14 +34,16 @@ class Ref extends YAMLMap{
   }
 
   parsePath(path: string): void {
-    const f = path.split('#');
-    // Local obj
-    if(f.length == 1) {
-      this.mObjPath = f[0];
-    } else if(f.length == 2) {
-      this.mFilePath = f[0];
-      this.mObjPath = f[1];
+    // Find the first #
+    let i = path.indexOf('#');
+
+    // Wrong ref. Skip
+    if (i < 0){
+      return;
     }
+
+    this.mFilePath = path.substring(0, i)
+    this.mObjPath = path.substring(i + 1);
   }
 
   toJSON(_, ctx) {
