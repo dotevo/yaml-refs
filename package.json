@@ -1,6 +1,6 @@
 {
-  "name": "yaml-refs",
-  "version": "0.0.1",
+  "name": "lib-yaml-refs",
+  "version": "0.0.2",
   "description": "",
   "main": "lib/index.js",
   "dependencies": {},
