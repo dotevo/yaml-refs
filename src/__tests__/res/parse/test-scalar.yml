@@ -1,0 +1,5 @@
+a:
+    aa:
+      aaa: val
+
+b: !ref "#a/aa/aaa"
