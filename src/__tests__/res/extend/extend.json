@@ -24,7 +24,8 @@
   },
   "object1B": {
     "style":{
-      "color": "yellow"
+      "color": "yellow",
+      "border": "1px"
     },
     "text": "new_value"
   }

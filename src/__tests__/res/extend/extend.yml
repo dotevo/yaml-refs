@@ -24,5 +24,7 @@ object1B:
   !ref
   ^ref: "#object1"
   style:
+    !ref
+    ^ref: "#object1/style"
     color: yellow
   text: new_value
