@@ -1,18 +1,18 @@
 import * as path from 'path';
 import * as YAML from 'yaml';
-import { YAMLMap, Scalar } from 'yaml/types'
-import * as N from 'yaml/dist/schema/Collection'
-const Collection = N.default;
 
-import {resolveComments} from 'yaml/dist/schema/parseUtils'
-import * as W from 'yaml/dist/schema/parseMap'
-const parseMap = W.default;
+import { YAMLMap, Scalar, Pair } from 'yaml/types'
 import { stringifyString } from 'yaml/util'
+
+import Collection from 'yaml/dist/schema/Collection'
+import parseMap from 'yaml/dist/schema/parseMap'
+import {resolveComments} from 'yaml/dist/schema/parseUtils'
 
 class Ref extends Collection {
   private mFilePath: string = "";
   private mObjPath: string = "";
   private mDoc: Document;
+  public items: Pair[];
 
   constructor(doc: Document) {
     super();
@@ -28,7 +28,7 @@ class Ref extends Collection {
     });
   }
 
-  getRefObject(): Node {
+  getRefObject(): Node|null {
     // Local file
     let doc = this.mDoc;
     // External file
@@ -46,8 +46,8 @@ class Ref extends Collection {
   getIn(path, keepScalar) {
     const obj = this.getRefObject();
     if (obj instanceof Collection) {
-      // @ts-ignore
-      return obj.getIn(path, keepScalar);
+      let col: Collection = obj;
+      return col.getIn(path, keepScalar);
     } else {
       return 'a';
     }
@@ -56,12 +56,10 @@ class Ref extends Collection {
   protected parsePath(path: string): void {
     // Find the first #
     let i = path.indexOf('#');
-
     // Wrong ref. Skip
     if (i < 0) {
       return;
     }
-
     this.mFilePath = path.substring(0, i)
     this.mObjPath = path.substring(i + 1);
   }
