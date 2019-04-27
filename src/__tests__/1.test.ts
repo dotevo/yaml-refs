@@ -30,6 +30,26 @@ describe('Reading', () => {
     expect(j).toEqual("val");
   });
 
+  test('3: Map via items fullpath', () => {
+    let j = doc.contents.items[0].value.items[0].value.items[0];
+    expect(j.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+  });
+
+  test('3: Map via items Ref', () => {
+    let j = doc.contents.items[1].value.items[0];
+    expect(j.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+  });
+
+  test('4: Scalar via items fullpath', () => {
+    let j = doc.contents.items[0].value.items[0].value.items[0].value;
+    expect(j.toJSON()).toEqual("val");
+  });
+
+  test('4: Scalar via items Ref', () => {
+    let j = doc.contents.items[1].value.items[0].value;
+    expect(j.toJSON()).toEqual("val");
+  });
+
 });
 
 describe('one file test (1st res)', () => {
