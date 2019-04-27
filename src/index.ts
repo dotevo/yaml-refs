@@ -31,16 +31,20 @@ class Ref extends Collection {
     let doc = this.mDoc;
     // External file
     if (this.mFilePath != "") {
+      // @ts-ignore
       if (this.mDoc.options.loader == null) return [];
+      // @ts-ignore
       doc = this.mDoc.options.loader.getDocument(this.mFilePath, this.mDoc);
-      if (doc == null) return [];
+      if (doc == null) return null;
     }
+    // @ts-ignore
     return doc.getIn(this.mObjPath.split('/'))
   }
 
   getIn(path, keepScalar) {
     const obj = this.getRefObject();
     if (obj instanceof Collection) {
+      // @ts-ignore
       return obj.getIn(path, keepScalar);
     } else {
       return 'a';
@@ -62,7 +66,9 @@ class Ref extends Collection {
 
   toJSON(_, ctx, Type) {
     const obj = this.getRefObject();
+    // @ts-ignore
     if (obj.toJSON == null) return obj;
+    // @ts-ignore
     return obj.toJSON(_, ctx, Type);
   }
 
