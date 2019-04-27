@@ -1,7 +1,14 @@
 a:
   aa:
-    aaa: val
+    aaa:
+      aaaa: val
 
+# To map
 b:
   !ref
   "#a/aa"
+
+# To scalar
+c:
+  !ref
+  "#a/aa/aaa/aaaa"

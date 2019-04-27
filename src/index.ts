@@ -19,7 +19,9 @@ class Ref extends Collection {
       configurable: true,
       enumerable: true,
       get: function() {
-        return this.getRefObject().items;
+        let w = this.getRefObject().items;
+        if(w == null)return [];
+        return w
       },
     });
   }

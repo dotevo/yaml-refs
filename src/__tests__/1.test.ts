@@ -5,48 +5,49 @@ import * as YAML from 'yaml';
 
 describe('Reading', () => {
   let doc: Document;
+  const b_json = JSON.parse('{"aaa": {"aaaa": "val"}}');
   beforeEach(() => {
     const str = fs.readFileSync('src/__tests__/res/1/test.yml', 'utf8');
     doc = YAML.parseDocument(str, {'merge': true, customTags:[ref]});
   });
 
-  test('1: getIn fullpath', () => {
+  test('1: Map via getIn fullpath', () => {
     const i = doc.getIn(['a','aa']);
-    expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+    expect(i.toJSON()).toEqual(b_json);
   });
 
-  test('1: getIn Ref', () => {
+  test('1: Map via getIn Ref', () => {
     const i = doc.getIn(['b']);
-    expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+    expect(i.toJSON()).toEqual(b_json);
   });
 
-  test('2: getIn fullpath', () => {
-    let j = doc.getIn(['a','aa','aaa']);
+  test('2: Scalar via getIn fullpath', () => {
+    let j = doc.getIn(['a','aa','aaa', 'aaaa']);
     expect(j).toEqual("val");
   });
 
-  test('2: getIn in Ref', () => {
-    let j = doc.getIn(['b','aaa']);
+  test('2: Scalar via getIn in Ref', () => {
+    let j = doc.getIn(['b','aaa', 'aaaa']);
     expect(j).toEqual("val");
   });
 
   test('3: Map via items fullpath', () => {
     let j = doc.contents.items[0].value.items[0].value.items[0];
-    expect(j.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+    expect(j.toJSON()).toEqual(b_json);
   });
 
   test('3: Map via items Ref', () => {
     let j = doc.contents.items[1].value.items[0];
-    expect(j.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+    expect(j.toJSON()).toEqual(b_json);
   });
 
   test('4: Scalar via items fullpath', () => {
-    let j = doc.contents.items[0].value.items[0].value.items[0].value;
+    let j = doc.contents.items[0].value.items[0].value.items[0].value.items[0].value;
     expect(j.toJSON()).toEqual("val");
   });
 
   test('4: Scalar via items Ref', () => {
-    let j = doc.contents.items[1].value.items[0].value;
+    let j = doc.contents.items[1].value.items[0].value.items[0].value;
     expect(j.toJSON()).toEqual("val");
   });
 
