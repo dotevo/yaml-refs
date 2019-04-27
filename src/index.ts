@@ -1,9 +1,12 @@
 import * as path from 'path';
 import * as YAML from 'yaml';
-import { Scalar } from 'yaml/types'
+import { YAMLMap, Scalar } from 'yaml/types'
 import * as N from 'yaml/dist/schema/Collection'
 const Collection = N.default;
 
+import {resolveComments} from 'yaml/dist/schema/parseUtils'
+import * as W from 'yaml/dist/schema/parseMap'
+const parseMap = W.default;
 import { stringifyString } from 'yaml/util'
 
 class Ref extends Collection {
@@ -11,9 +14,8 @@ class Ref extends Collection {
   private mObjPath: string = "";
   private mDoc: Document;
 
-  constructor(doc: Document, path: string) {
+  constructor(doc: Document) {
     super();
-    this.parsePath(path);
     this.mDoc = doc;
     Object.defineProperty(this, "items", {
       configurable: true,
@@ -51,7 +53,7 @@ class Ref extends Collection {
     }
   }
 
-  parsePath(path: string): void {
+  protected parsePath(path: string): void {
     // Find the first #
     let i = path.indexOf('#');
 
@@ -77,12 +79,91 @@ class Ref extends Collection {
   }
 };
 
+class RefScalar extends Ref{
+  constructor(doc: Document, cst: any) {
+    super(doc);
+    const path = cst.strValue;
+    // Defined as scalar
+    if (path != null) {
+      this.parsePath(path);
+    }
+  }
+};
+
+class RefMap extends Ref{
+  private mSource: YAMLMap;
+  constructor(doc: Document, map: YAMLMap) {
+    super(doc);
+    this.mSource = map;
+
+    for (let i = 0; i < map.items.length; ++i) {
+      if(map.items[i].key.value === '^ref') {
+        this.parsePath(map.items[i].value.value);
+      }
+    }
+
+    Object.defineProperty(this, "items", {
+      configurable: true,
+      enumerable: true,
+      get: function() {
+        let arr = [];
+        let w = this.getRefObject().items;
+        for(let i =0;i<this.mSource.items.length;i++) {
+          if(this.mSource.items[i].key.value == '^ref') continue;
+          arr.push(this.mSource.items[i])
+        }
+        for(let i =0;i<w.length;i++) {
+          let exist = false;
+          for(let j=0;j<arr.length;j++) {
+            if(arr[j].key.value == w[i].key.value) {
+              exist = true;
+              break;
+            }
+          }
+          if(!exist)
+          arr.push(w[i])
+        }
+        return arr
+      },
+    });
+  }
+
+  getIn(path, keepScalar) {
+    let obj = this.mSource.getIn(path, keepScalar);
+    if(obj == null) {
+      return super.getIn(path, keepScalar);
+    }
+    return obj;
+  }
+
+  toJSON(_, ctx, Type) {
+    const map = Type ? new Type() : ctx && ctx.mapAsMap ? new Map() : {}
+    if (ctx && ctx.onCreate) ctx.onCreate(map)
+    for (const item of this.items) {
+      item.addToJSMap(ctx, map)
+    }
+    for (const item of this.mSource.items) {
+      if(item.key.value == '^ref') continue;
+      item.addToJSMap(ctx, map)
+    }
+    return map
+  }
+
+  toString(ctx, onComment) {
+    return this.mSource.toString(ctx, onComment);
+  }
+};
+
 const ref = {
   identify: value => value.constructor === Ref,
   nodeClass: Ref,
   tag: '!ref',
   resolve: function(doc, cst) {
-    return new Ref(doc, cst.strValue);
+    // Simple ref without extending
+    if(cst.strValue != null) {
+      return new RefScalar(doc, cst);
+    }
+    return new RefMap(doc, parseMap(doc, cst));
   }
 }
 
