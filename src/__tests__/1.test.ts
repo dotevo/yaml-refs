@@ -3,6 +3,35 @@ import * as fs from 'fs';
 //import * as path from 'path';
 import * as YAML from 'yaml';
 
+describe('Reading', () => {
+  let doc: Document;
+  beforeEach(() => {
+    const str = fs.readFileSync('src/__tests__/res/1/test.yml', 'utf8');
+    doc = YAML.parseDocument(str, {'merge': true, customTags:[ref]});
+  });
+
+  test('1: getIn fullpath', () => {
+    const i = doc.getIn(['a','aa']);
+    expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+  });
+
+  test('1: getIn Ref', () => {
+    const i = doc.getIn(['b']);
+    expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
+  });
+
+  test('2: getIn fullpath', () => {
+    let j = doc.getIn(['a','aa','aaa']);
+    expect(j).toEqual("val");
+  });
+
+  test('2: getIn in Ref', () => {
+    let j = doc.getIn(['b','aaa']);
+    expect(j).toEqual("val");
+  });
+
+});
+
 describe('one file test (1st res)', () => {
   let doc: Document;
   let json: JSON;
@@ -21,11 +50,6 @@ describe('one file test (1st res)', () => {
     expect(String(doc)).toEqual(str);
   });
 
-  test('check ref value', () => {
-    const i = doc.getIn(['b']);
-    expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val"}'));
-  });
-
   test('change in source', () => {
     let j = doc.getIn(['a','aa']);
     j.items[0].value = 'val2';
@@ -41,4 +65,5 @@ describe('one file test (1st res)', () => {
     const i = doc.getIn(['a','aa']);
     expect(i.toJSON()).toEqual(JSON.parse('{"aaa": "val2"}'));
   });
+
 )};
