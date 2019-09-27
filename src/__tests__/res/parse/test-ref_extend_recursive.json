@@ -15,13 +15,6 @@
     },
     "text": "value"
   },
-  "object2": {
-    "style":{
-      "color": "red",
-      "border": "1px"
-    },
-    "text": "value"
-  },
   "object1B": {
     "style":{
       "color": "yellow",

@@ -13,13 +13,6 @@ object1:
     ^ref: "#border_style"
   text: value
 
-object2:
-  style:
-    !ref
-    ^ref: "#border_style"
-    color: red
-  text: value
-
 object1B:
   !ref
   ^ref: "#object1"

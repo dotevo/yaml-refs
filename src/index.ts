@@ -121,6 +121,10 @@ class RefMap extends Ref{
           for(let j=0;j<arr.length;j++) {
             if(arr[j].key.value == w[i].key.value) {
               exist = true;
+              if (arr[j].value.type === 'MAP' && this.mParams['^ref-type'] === 'recursive') {
+                arr[j].value.items.push(new Pair(new Scalar('^ref'), new Scalar(this.mParams['^ref'] + "/" + arr[j].key.value)));
+                arr[j].value = new RefMap(doc, arr[j].value);
+              }
               break;
             }
           }
