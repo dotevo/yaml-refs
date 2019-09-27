@@ -107,7 +107,9 @@ class RefMap extends Ref{
         let arr = [];
         let w = this.getRefObject().items;
         for(let i =0;i<this.mSource.items.length;i++) {
-          if(this.mSource.items[i].key.value == '^ref') continue;
+          if(this.mSource.items[i].key.value.startsWith('^ref')) continue;
+          console.log(this.mSource.items[i].key.value)
+
           arr.push(this.mSource.items[i])
         }
         for(let i =0;i<w.length;i++) {
@@ -141,7 +143,7 @@ class RefMap extends Ref{
       item.addToJSMap(ctx, map)
     }
     for (const item of this.mSource.items) {
-      if(item.key.value == '^ref') continue;
+      if(item.key.value.startsWith('^ref')) continue;
       item.addToJSMap(ctx, map)
     }
     return map
