@@ -1,0 +1,29 @@
+basic_style:
+  color: black
+  border: 0px
+
+border_style:
+  !ref
+  ^ref: "#basic_style"
+  border: 1px
+
+object1:
+  style:
+    !ref
+    ^ref: "#border_style"
+  text: value
+
+object2:
+  style:
+    !ref
+    ^ref: "#border_style"
+    color: red
+  text: value
+
+object1B:
+  !ref
+  ^ref: "#object1"
+  ^ref-type: "recursive"
+  style:
+    color: yellow
+  text: new_value

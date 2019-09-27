@@ -1,0 +1,32 @@
+{
+  "basic_style":
+  {
+    "color": "black",
+    "border": "0px"
+  },
+  "border_style": {
+    "color": "black",
+    "border": "1px"
+  },
+  "object1": {
+    "style":{
+      "color": "black",
+      "border": "1px"
+    },
+    "text": "value"
+  },
+  "object2": {
+    "style":{
+      "color": "red",
+      "border": "1px"
+    },
+    "text": "value"
+  },
+  "object1B": {
+    "style":{
+      "color": "yellow",
+      "border": "1px"
+    },
+    "text": "new_value"
+  }
+}
