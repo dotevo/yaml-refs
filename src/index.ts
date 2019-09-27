@@ -90,14 +90,20 @@ class RefScalar extends Ref{
 
 class RefMap extends Ref{
   private mSource: YAMLMap;
+  private mParams = {};
+
   constructor(doc: Document, map: YAMLMap) {
     super(doc);
     this.mSource = map;
 
     for (let i = 0; i < map.items.length; ++i) {
-      if(map.items[i].key.value === '^ref') {
-        this.parsePath(map.items[i].value.value);
+      if(map.items[i].key.value.startsWith('^ref')) {
+        this.mParams[map.items[i].key.value] = map.items[i].value.value;
       }
+    }
+
+    if (this.mParams['^ref']) {
+      this.parsePath(this.mParams['^ref']);
     }
 
     Object.defineProperty(this, "items", {
@@ -108,8 +114,6 @@ class RefMap extends Ref{
         let w = this.getRefObject().items;
         for(let i =0;i<this.mSource.items.length;i++) {
           if(this.mSource.items[i].key.value.startsWith('^ref')) continue;
-          console.log(this.mSource.items[i].key.value)
-
           arr.push(this.mSource.items[i])
         }
         for(let i =0;i<w.length;i++) {
