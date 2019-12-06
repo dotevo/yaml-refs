@@ -5,15 +5,15 @@
   "main": "lib/index.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.12.0",
-    "jest": "^24.5.0",
-    "prettier": "^1.16.4",
-    "ts-jest": "^24.0.0",
-    "tslint": "^5.14.0",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.4000",
-    "yaml": "^1.5.0"
+    "typescript": "^3.7.3",
+    "yaml": "^1.7.2"
   },
   "scripts": {
     "build": "tsc",
