@@ -1,0 +1,10 @@
+parent:
+  color: black
+  animal: dog
+  uniqueParent: 1
+
+child:
+  !ref
+  ^ref: "#parent"
+  animal: cat
+  uniqueChild: 2

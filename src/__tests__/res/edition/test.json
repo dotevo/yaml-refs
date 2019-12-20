@@ -1,0 +1,13 @@
+{
+  "parent": {
+    "animal": "dog",
+    "color": "black",
+    "uniqueParent": 1
+  },
+  "child": {
+    "animal": "cat",
+    "color": "black",
+    "uniqueParent": 1,
+    "uniqueChild": 2
+  }
+}
