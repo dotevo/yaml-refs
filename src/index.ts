@@ -162,7 +162,7 @@ class RefMap extends Ref{
       }
     }
 
-    this.getRefObject().set(name, value);
+    this.mSource.set(name, value);
   }
 
   toJSON(_, ctx, Type) {
