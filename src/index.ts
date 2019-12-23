@@ -145,6 +145,12 @@ class RefMap extends Ref{
   }
 
   getSource(name) {
+    if(this.mSource) {
+      if (this.mSource.has(name)) {
+        return this;
+      }
+    }
+    return this.getRefObject();
   }
 
   set(name, value, create = false) {
