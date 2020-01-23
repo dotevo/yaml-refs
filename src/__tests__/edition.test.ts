@@ -35,6 +35,17 @@ describe('include file test (2st res)', () => {
 		expect(doc.getIn(['child']).getSource('color')).toEqual(doc.getIn(['parent']));
 	});
 
+	test('edit child should create item even if parent has item', () => {
+		// Get parent
+		const i = doc.getIn(['child']);
+		i.set('color', 'yellow', true);
+		expect(doc.getIn(['parent']).toJSON()).toEqual(
+			JSON.parse('{"animal": "dog", "color": "black", "uniqueParent": 1}'),
+		);
+		expect(doc.getIn(['child']).toJSON()).toEqual(JSON.parse('{"animal": "cat", "color": "yellow", "uniqueChild": 2, "uniqueParent": 1}'));
+		expect(doc.getIn(['child']).getSource('color')).toEqual(doc.getIn(['child']);
+	});
+
 	test('edit child should not modify parent if it is own value', () => {
 		// Get parent
 		const i = doc.getIn(['child']);
