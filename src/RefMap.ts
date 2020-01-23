@@ -69,14 +69,15 @@ export class RefMap extends Ref {
 
 	set(name, value, create = false) {
 		if (this.mSource) {
-			if (this.mSource.has(name)) {
-				return this.mSource.set(name, value);
-			} else if (create) {
+			if (create && !this.mSource.has(name)) {
 				return this.mSource.items.push(new Pair(name, value));
 			}
+			let source = this.getSource(name);
+			if (source !== this) {
+				return source.set(name, value);
+			}
+			this.mSource.set(name, value);
 		}
-
-		this.mSource.set(name, value);
 	}
 
 	toJSON(_, ctx, Type) {
