@@ -32,6 +32,9 @@ export class Ref extends Collection {
 			doc = this.mDoc.options.loader.getDocument(this.mFilePath, this.mDoc);
 			if (doc == null) return null;
 		}
+		if (this.mObjPath === '') {
+			return doc;
+		}
 		// @ts-ignore
 		return doc.getIn(this.mObjPath.split('/'));
 	}
